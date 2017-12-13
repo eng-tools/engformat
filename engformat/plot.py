@@ -25,7 +25,7 @@ def time_series(sp, **kwargs):
     sp.yaxis.grid(True)
     tools.remove_chartjunk(sp)
     if origin:
-        sp.plot(sp.get_xlim(), [0, 0], c=cbox('dark grey'), ls='--', zorder=-1, lw=0.7)
+        sp.plot(sp.get_xlim(), [0, 0], c=cbox('dark gray'), ls='--', zorder=-1, lw=0.7)
     if balance:
         ylim = max(abs(sp.get_ylim()[0]), abs(sp.get_ylim()[1]))
         sp.set_ylim([-ylim, ylim])
@@ -50,7 +50,7 @@ def time_series(sp, **kwargs):
 #     # sp.yaxis.grid(True)
 #     # tools.remove_chartjunk(sp)
 #     # if origin:
-#     #     sp.plot(sp.get_xlim(), [0, 0], c=cbox('mid grey'), ls='--', zorder=-1)
+#     #     sp.plot(sp.get_xlim(), [0, 0], c=cbox('mid gray'), ls='--', zorder=-1)
 #     # if balance:
 #     #     ylim = max(abs(sp.get_ylim()[0]), abs(sp.get_ylim()[1]))
 #     #     sp.set_ylim([-ylim, ylim])
@@ -109,18 +109,18 @@ def xy(sp, **kwargs):
     xlim = sp.get_xlim()
     ylim = sp.get_ylim()
     if x_axis:
-        sp.plot([-xlim[1], xlim[1]], [0, 0], c=cbox('dark grey'), zorder=-1)
+        sp.plot([-xlim[1], xlim[1]], [0, 0], c=cbox('dark gray'), zorder=-1)
     if y_axis:
-        sp.plot([0, 0], [-ylim[1], ylim[1]], c=cbox('dark grey'), zorder=-2)
+        sp.plot([0, 0], [-ylim[1], ylim[1]], c=cbox('dark gray'), zorder=-2)
     if ratio:
-        sp.plot(xlim, [1, 1], c=cbox('dark grey'), zorder=-3)
+        sp.plot(xlim, [1, 1], c=cbox('dark gray'), zorder=-3)
     if parity:
         botlim = min(xlim[0], ylim[0])
         toplim = min(xlim[1], ylim[1])
-        sp.plot([botlim, toplim], [botlim, toplim], c=cbox('mid grey'), zorder=-2)
+        sp.plot([botlim, toplim], [botlim, toplim], c=cbox('mid gray'), zorder=-2)
         if parity == 2:
-            sp.fill_between([botlim, toplim], [botlim, 0.5 * toplim], [botlim, 2 * toplim], facecolor=cbox('mid grey'), zorder=-3, alpha=0.1)
-            # sp.plot([0, minlim], [0, 0.5 * minlim], c=cbox('mid grey'), zorder=-2)
+            sp.fill_between([botlim, toplim], [botlim, 0.5 * toplim], [botlim, 2 * toplim], facecolor=cbox('mid gray'), zorder=-3, alpha=0.1)
+            # sp.plot([0, minlim], [0, 0.5 * minlim], c=cbox('mid gray'), zorder=-2)
 
 
 def rotation_settlement(sp):
@@ -131,8 +131,8 @@ def rotation_settlement(sp):
     sp.set_xlim([-xlim, xlim])
     sp.set_ylim([(sp.get_ylim()[0]), (sp.get_ylim()[1])])
     # plot origin
-    sp.plot([-xlim, xlim], [0, 0], c=cbox('dark grey'), zorder=-1)
-    sp.plot([0, 0], [(sp.get_ylim()[0]), (sp.get_ylim()[1])], c=cbox('dark grey'), zorder=-2)
+    sp.plot([-xlim, xlim], [0, 0], c=cbox('dark gray'), zorder=-1)
+    sp.plot([0, 0], [(sp.get_ylim()[0]), (sp.get_ylim()[1])], c=cbox('dark gray'), zorder=-2)
     sp.tick_params(axis="both", which="both", bottom="on", top="off",
                    labelbottom="on", left="on", right="off", labelleft="on")
 
@@ -155,8 +155,8 @@ def hysteresis(sp):
     xlim = max(abs(xlims[0]), abs(xlims[1]))
     sp.set_xlim([-xlim, xlim])
     # plot origin
-    sp.plot([-xlim, xlim], [0, 0], c=cbox('dark grey'), zorder=-1)
-    sp.plot([0, 0], [-ylim, ylim], c=cbox('dark grey'), zorder=-2)
+    sp.plot([-xlim, xlim], [0, 0], c=cbox('dark gray'), zorder=-1)
+    sp.plot([0, 0], [-ylim, ylim], c=cbox('dark gray'), zorder=-2)
     sp.tick_params(axis="both", which="both", bottom="on", top="off",
                 labelbottom="on", left="on", right="off", labelleft="on")
 
@@ -193,7 +193,7 @@ def transfer_function(sp, **kwargs):
 
     if ratio:
         xlim = sp.get_xlim()
-        sp.plot(xlim, [1, 1], c=cbox('dark grey'), lw=0.7, zorder=50)
+        sp.plot(xlim, [1, 1], c=cbox('dark gray'), lw=0.7, zorder=50)
 
 
 def save_plot_state(sub_plot, name):

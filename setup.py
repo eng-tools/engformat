@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='engformat',
-      version='0.0.1',
+      version='0.0.2',
       description='A series for tools for displaying engineering calculations according to the Engineering Standard Format',
       url='',
       author='Maxim Millen',

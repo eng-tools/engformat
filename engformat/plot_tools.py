@@ -17,13 +17,13 @@ def remove_chartjunk(ax, grid=None, ticklabels=None, show_ticks=False):
     axis
     '''
     all_spines = ['top', 'bottom', 'right', 'left', 'polar']
-    ax.tick_params(color=cbox('dark grey'))
+    ax.tick_params(color=cbox('dark gray'))
     for spine in all_spines:
         # The try/except is for polar coordinates, which only have a 'polar'
         # spine and none of the others
         try:
             # ax.spines[spine].set_visible(False)
-            ax.spines[spine].set_color(cbox('dark grey'))
+            ax.spines[spine].set_color(cbox('dark gray'))
             ax.spines[spine].set_linewidth(0.5)
 #             ax.spines[spine].set_tick_color(0.5)
 
@@ -32,7 +32,7 @@ def remove_chartjunk(ax, grid=None, ticklabels=None, show_ticks=False):
     ax.yaxis.label.set_color('0.1')
     ax.xaxis.label.set_color('0.1')
     # For the remaining spines, make their line thinner and a slightly
-    # off-black dark grey
+    # off-black dark gray
     for spine in all_spines:
         if spine not in all_spines:
             # The try/except is for polar coordinates, which only have a 'polar'
@@ -72,18 +72,18 @@ def remove_chartjunk(ax, grid=None, ticklabels=None, show_ticks=False):
                 ax.set_yticklabels([])
 
 
-def trim_ticks(sub_fig, **kwargs):
+def trim_ticks(sub_plot, **kwargs):
     balance = kwargs.get('balance', False)
-    xlims = sub_fig.get_xlim()
-    xticks = list(sub_fig.get_xticks())
+    xlims = sub_plot.get_xlim()
+    xticks = list(sub_plot.get_xticks())
     pts = len(xticks)
     for i in range(pts - 1, 0, -1):
         if xticks[i] < xlims[0] or xticks[i] > xlims[1]:
             xticks.pop(i)
-    sub_fig.set_xticks(xticks)
+    sub_plot.set_xticks(xticks)
 
-    ylims = sub_fig.get_ylim()
-    yticks = list(sub_fig.get_yticks())
+    ylims = sub_plot.get_ylim()
+    yticks = list(sub_plot.get_yticks())
     pts = len(yticks)
     for i in range(pts - 1, 0, -1):
         if yticks[i] < ylims[0] or yticks[i] > ylims[1]:
@@ -92,28 +92,28 @@ def trim_ticks(sub_fig, **kwargs):
         max_end = np.max([abs(yticks[0]), abs(yticks[-1])])
         tick_delta = abs(yticks[1] - yticks[0])
         yticks = np.arange(-max_end, max_end + tick_delta, tick_delta)
-    sub_fig.set_yticks(yticks)
+    sub_plot.set_yticks(yticks)
 
 
-def revamp_legend(sub_fig, ncol=1, **kwargs):
-    legloc = kwargs.get('legloc', 'upper right')
+def revamp_legend(sub_plot, ncol=1, **kwargs):
+    loc = kwargs.get('loc', 'upper right')
     single = kwargs.get('single', True)
     bbox_to_anchor = kwargs.get('bbox_to_anchor', False)
     prop = kwargs.get('prop', None)
 
     if single:
-        handles, labels = sub_fig.get_legend_handles_labels()
+        handles, labels = sub_plot.get_legend_handles_labels()
         labs = []
         hands = []
         for qq in range(len(labels)):
             if labels[qq] not in labs:
                 labs.append(labels[qq])
                 hands.append(handles[qq])
-        sub_fig.legend(hands, labs, numpoints=1, handlelength=1, handletextpad=0.5, labelspacing=0.3, scatterpoints=1, loc=legloc, ncol=ncol, prop=prop)
+        sub_plot.legend(hands, labs, numpoints=1, handlelength=1, handletextpad=0.5, labelspacing=0.3, scatterpoints=1, loc=loc, ncol=ncol, prop=prop)
     else:
-        sub_fig.legend(numpoints=1, handlelength=1, handletextpad=0.5, labelspacing=0.3, scatterpoints=1, loc=legloc, ncol=ncol, prop=prop)
+        sub_plot.legend(numpoints=1, handlelength=1, handletextpad=0.5, labelspacing=0.3, scatterpoints=1, loc=loc, ncol=ncol, prop=prop)
     if bbox_to_anchor != False:
-        sub_fig.legend(numpoints=1, handlelength=1, handletextpad=0.5, labelspacing=0.3, scatterpoints=1, loc=legloc, ncol=ncol, bbox_to_anchor=bbox_to_anchor, prop=prop)
+        sub_plot.legend(numpoints=1, handlelength=1, handletextpad=0.5, labelspacing=0.3, scatterpoints=1, loc=loc, ncol=ncol, bbox_to_anchor=bbox_to_anchor, prop=prop)
     # borderpad    the fractional whitespace inside the legend border
     # shadow    if True, draw a shadow behind legend
     # framealpha    If not None, alpha channel for the frame.
@@ -121,7 +121,7 @@ def revamp_legend(sub_fig, ncol=1, **kwargs):
     # labelspacing    the vertical space between the legend entries
     # handlelength    the length of the legend handles
     # handletextpad    the pad between the legend handle and text
-    leg = sub_fig.get_legend()
+    leg = sub_plot.get_legend()
 
 
     try:  # check if plot has a legend
@@ -141,7 +141,7 @@ def revamp_legend(sub_fig, ncol=1, **kwargs):
         # tt.set_size(7)
 
 
-def restyle_lines(sub_fig, style="bw", **kwargs):
+def restyle_lines(sub_plot, style="bw", **kwargs):
     """
     Change the color and line style based on the bw_plot style.
     """
@@ -151,7 +151,7 @@ def restyle_lines(sub_fig, style="bw", **kwargs):
     elif style == "spectra":
         from bwplot.colours import spectra as cs
 
-    lines = sub_fig.lines
+    lines = sub_plot.lines
     labs = {}
     cc_box = 0
     for i in range(len(lines)):
