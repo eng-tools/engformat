@@ -163,3 +163,18 @@ def restyle_lines(sub_plot, style="bw", **kwargs):
             labs[label] = cc_box
             cc_box += 1
         lines[i].set_color(cs(labs[label]))
+
+
+def letter_code(subplots, loc="upper left"):
+    if loc == "upper left":
+        x = 0.03
+        y = 0.95
+    else:
+        x = 0.95
+        y = 0.95
+    letters = "abcdefghijk"
+    for i in range(len(subplots)):
+        subplots[i].text(x, y, '(%s)' % letters[i],
+            verticalalignment='top', horizontalalignment='left',
+            transform=subplots[i].transAxes,
+            color='black', fontsize=9)
