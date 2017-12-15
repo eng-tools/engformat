@@ -1,14 +1,17 @@
-# README #
+README
+======
 
 This python project contains tools to present work according to the engineering standard format.
 
-### What is this repository for? ###
+What is this repository for?
+============================
 
 * Quick summary
 * Version
 * [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
 
-### How do I get set up? ###
+How do I get set up?
+====================
 
 * Summary of set up
 * Configuration
