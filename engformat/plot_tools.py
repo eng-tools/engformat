@@ -6,72 +6,6 @@ import numpy as np
 from bwplot import cbox
 
 
-def remove_chartjunk(ax, grid=None, ticklabels=None, show_ticks=False):
-    '''
-    Removes "chartjunk", such as extra lines of axes and tick marks.
-
-    If grid="y" or "x", will add a white grid at the "y" or "x" axes,
-    respectively
-
-    If ticklabels="y" or "x", or ['x', 'y'] will remove ticklabels from that
-    axis
-    '''
-    all_spines = ['top', 'bottom', 'right', 'left', 'polar']
-    ax.tick_params(color=cbox('dark gray'))
-    for spine in all_spines:
-        # The try/except is for polar coordinates, which only have a 'polar'
-        # spine and none of the others
-        try:
-            # ax.spines[spine].set_visible(False)
-            ax.spines[spine].set_color(cbox('dark gray'))
-            ax.spines[spine].set_linewidth(0.5)
-#             ax.spines[spine].set_tick_color(0.5)
-
-        except KeyError:
-            pass
-    ax.yaxis.label.set_color('0.1')
-    ax.xaxis.label.set_color('0.1')
-    # For the remaining spines, make their line thinner and a slightly
-    # off-black dark gray
-    for spine in all_spines:
-        if spine not in all_spines:
-            # The try/except is for polar coordinates, which only have a 'polar'
-            # spine and none of the others
-            try:
-                ax.spines[spine].set_linewidth(0.5)
-            except KeyError:
-                pass
-                # ax.spines[spine].set_color(almost_black)
-                #            ax.spines[spine].set_tick_params(color=almost_black)
-                # Check that the axes are not log-scale. If they are, leave the ticks
-                # because otherwise people assume a linear scale.
-    x_pos = set(['top', 'bottom'])
-    y_pos = set(['left', 'right'])
-    xy_pos = [x_pos, y_pos]
-    xy_ax_names = ['xaxis', 'yaxis']
-
-    ax.tick_params(axis='y', colors='blue', width=0, which='top')
-
-    if grid is not None:
-        for g in grid:
-            assert g in ('x', 'y')
-            ax.grid(axis=grid, color='white', linestyle='-', linewidth=0.3)
-
-    if ticklabels is not None:
-        if type(ticklabels) is str:
-            assert ticklabels in {('x', 'y')}
-            if ticklabels == 'x':
-                ax.set_xticklabels([])
-            if ticklabels == 'y':
-                ax.set_yticklabels([])
-        else:
-            assert set(ticklabels) | {('x', 'y')} > 0
-            if 'x' in ticklabels:
-                ax.set_xticklabels([])
-            elif 'y' in ticklabels:
-                ax.set_yticklabels([])
-
-
 def trim_ticks(sub_plot, **kwargs):
     balance = kwargs.get('balance', False)
     xlims = sub_plot.get_xlim()
@@ -178,3 +112,17 @@ def letter_code(subplots, loc="upper left"):
             verticalalignment='top', horizontalalignment='left',
             transform=subplots[i].transAxes,
             color='black', fontsize=9)
+
+
+def clean_chart(ax):
+    """
+    Removes extra lines of axes and tick marks from chart.
+    """
+    edges = ['top', 'bottom', 'right', 'left']
+    ax.tick_params(color=cbox('dark gray'))
+    for edge in edges:
+        ax.spines[edge].set_color(cbox('dark gray'))
+        ax.spines[edge].set_linewidth(0.4)
+    ax.yaxis.label.set_color(cbox('light gray'))
+    ax.xaxis.label.set_color(cbox('light gray'))
+    ax.tick_params(axis='y', colors='black', width=0, which='top')

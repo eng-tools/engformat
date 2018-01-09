@@ -7,8 +7,6 @@ from bwplot import cbox
 import engformat.plot_tools as tools
 import matplotlib.pyplot as plt
 
-# from engineeringstandardformat.deprecated_plot.plots import y_analysis_matrix, x_series
-
 from matplotlib import rc
 rc('font', family='Times New Roman', size=10)
 
@@ -23,7 +21,7 @@ def time_series(sp, **kwargs):
     balance = kwargs.get('balance', False)
     origin = kwargs.get('origin', True)
     sp.yaxis.grid(True)
-    tools.remove_chartjunk(sp)
+    tools.clean_chart(sp)
     if origin:
         sp.plot(sp.get_xlim(), [0, 0], c=cbox('dark gray'), ls='--', zorder=-1, lw=0.7)
     if balance:
@@ -35,31 +33,6 @@ def time_series(sp, **kwargs):
     if balance:
         ylim = max(abs(sp.get_ylim()[0]), abs(sp.get_ylim()[1]))
         sp.set_ylim([-ylim, ylim])
-
-#
-# def timer(sp, **kwargs):
-#     def p_decorate(func):
-#         def func_wrapper(name):
-#            return "<p>{0}</p>".format(func(name))
-#         return func_wrapper
-#
-#     t_func = p_decorate(plt.plot)
-#     return t_func
-#     # balance = kwargs.get('balance', False)
-#     # origin = kwargs.get('origin', True)
-#     # sp.yaxis.grid(True)
-#     # tools.remove_chartjunk(sp)
-#     # if origin:
-#     #     sp.plot(sp.get_xlim(), [0, 0], c=cbox('mid gray'), ls='--', zorder=-1)
-#     # if balance:
-#     #     ylim = max(abs(sp.get_ylim()[0]), abs(sp.get_ylim()[1]))
-#     #     sp.set_ylim([-ylim, ylim])
-#     # sp.tick_params(axis="both", which="both", bottom="on", top="off",
-#     #             labelbottom="on", left="off", right="off", labelleft="on")
-#     # tools.trim_ticks(sp, balance=balance)
-#     # if balance:
-#     #     ylim = max(abs(sp.get_ylim()[0]), abs(sp.get_ylim()[1]))
-#     #     sp.set_ylim([-ylim, ylim])
 
 
 def new_time_series_plots(nrows=1):
@@ -97,7 +70,7 @@ def xy(sp, **kwargs):
         sp.yaxis.grid(True, c='gray', zorder=-5)
     if y_grid:
         sp.xaxis.grid(True, c='gray', zorder=-6)
-    tools.remove_chartjunk(sp)
+    tools.clean_chart(sp)
     sp.tick_params(axis="both", which="both", bottom="on", top="off",
                    labelbottom="on", left="on", right="off", labelleft="on")
     xlim = sp.get_xlim()
@@ -126,7 +99,7 @@ def xy(sp, **kwargs):
 def rotation_settlement(sp):
     sp.yaxis.grid(True)
     sp.xaxis.grid(True)
-    tools.remove_chartjunk(sp)
+    tools.clean_chart(sp)
     xlim = max(abs(sp.get_xlim()[0]), abs(sp.get_xlim()[1]))
     sp.set_xlim([-xlim, xlim])
     sp.set_ylim([(sp.get_ylim()[0]), (sp.get_ylim()[1])])
@@ -140,7 +113,7 @@ def rotation_settlement(sp):
 def hysteresis(sp):
     sp.yaxis.grid(True)
     sp.xaxis.grid(True)
-    tools.remove_chartjunk(sp)
+    tools.clean_chart(sp)
     ylim = max(abs(sp.get_ylim()[0]), abs(sp.get_ylim()[1]))
     sp.set_ylim([-ylim, ylim])
     xlimits = sp.get_xlim()
@@ -182,7 +155,7 @@ def transfer_function(sp, **kwargs):
     for line in lines:
         z_value = line.get_zorder()
         line.set_zorder(z_value + 100)
-    tools.remove_chartjunk(sp)
+    tools.clean_chart(sp)
     sp.tick_params(axis="both", which="both", bottom="on", top="off",
                    labelbottom="on", left="on", right="off", labelleft="on")
     xlim = sp.get_xlim()
@@ -199,17 +172,8 @@ def transfer_function(sp, **kwargs):
 def save_plot_state(sub_plot, name):
     from pathlib import Path
     home = str(Path.home())
-    # ax = sub_plot.gca()
-    # line = ax.lines[0]
-    # x = line.get_xdata()
-    # y = line.get_ydata()
     with open(home + '/esfp_files/%s.pkl' % name, 'wb') as fid:
         pickle.dump(sub_plot, fid)
-    # a = open(home + "/%s.espp" % name, "w")
-    # para = ",".join(x) + "\n"
-    # para += ",".join(y)
-    # a.write(para)
-    # a.close()
 
 
 def load_plot_state(name):
