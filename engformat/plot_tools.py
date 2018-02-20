@@ -103,9 +103,15 @@ def letter_code(subplots, loc="upper left"):
     if loc == "upper left":
         x = 0.03
         y = 0.95
-    else:
-        x = 0.95
+    elif loc == "upper right":
+        x = 0.9
         y = 0.95
+    elif loc == "lower left":
+        x = 0.03
+        y = 0.5
+    else:
+        x = 0.03
+        y = 0.5
     letters = "abcdefghijk"
     for i in range(len(subplots)):
         subplots[i].text(x, y, '(%s)' % letters[i],
@@ -123,6 +129,6 @@ def clean_chart(ax):
     for edge in edges:
         ax.spines[edge].set_color(cbox('dark gray'))
         ax.spines[edge].set_linewidth(0.4)
-    ax.yaxis.label.set_color(cbox('light gray'))
-    ax.xaxis.label.set_color(cbox('light gray'))
+    ax.yaxis.label.set_color(cbox('dark gray'))
+    ax.xaxis.label.set_color(cbox('dark gray'))
     ax.tick_params(axis='y', colors='black', width=0, which='top')

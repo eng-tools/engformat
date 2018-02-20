@@ -12,6 +12,7 @@ setup(name='engformat',
     ],
     install_requires=[
         "numpy",
-        "bwplot"
+        "bwplot",
+        "sfsimodels"
     ],
       zip_safe=False)

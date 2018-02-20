@@ -28,11 +28,11 @@ def test_pb_time_series():
 def test_pb_xy():
     A = plt.figure(figsize=(6, 4))
     P1 = A.add_subplot(111)
-    y = np.random.normal(size=1000).cumsum()
+    y = np.random.normal(size=1000).cumsum() + 3
     x = np.arange(1000)
     P1.plot(x, y, c=cbox(1), alpha=0.7, label='chur')
     P1.set_xlabel('Time $[s]$')
-    esfp.xy(P1)
+    esfp.xy(P1, x_origin=True, y_origin=True)
 
 
 def test_pb_transfer_function():
@@ -55,6 +55,6 @@ def test_pb_transfer_function():
 
 
 if __name__ == '__main__':
-    test_pb_transfer_function()
+    test_pb_xy()
     plt.show()
     # test_pb_timeseries()

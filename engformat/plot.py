@@ -67,9 +67,9 @@ def xy(sp, **kwargs):
     y_grid = kwargs.get('y_grid', True)
     ratio = kwargs.get('ratio', False)
     if x_grid:
-        sp.yaxis.grid(True, c='gray', zorder=-5)
+        sp.yaxis.grid(True, c=cbox('light gray'), zorder=-5, ls="--")
     if y_grid:
-        sp.xaxis.grid(True, c='gray', zorder=-6)
+        sp.xaxis.grid(True, c=cbox('light gray'), zorder=-6, ls="--")
     tools.clean_chart(sp)
     sp.tick_params(axis="both", which="both", bottom="on", top="off",
                    labelbottom="on", left="on", right="off", labelleft="on")
