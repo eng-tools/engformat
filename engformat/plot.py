@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 
 from matplotlib import rc
 rc('font', family='Times New Roman', size=10)
+import matplotlib
 
 
 def journal_figure(fig, figure_path, size="small"):
@@ -58,6 +59,7 @@ def time_series_plots(sub_plots):
 
 
 def xy(sp, **kwargs):
+    matplotlib.rcParams['lines.linewidth'] = 1.2
     x_origin = kwargs.get('x_origin', False)
     y_origin = kwargs.get('y_origin', False)
     x_axis = kwargs.get('x_axis', False)

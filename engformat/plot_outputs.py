@@ -1,37 +1,41 @@
 from sfsimodels import output as mo
 from collections import OrderedDict
 
-import matplotlib
-import matplotlib.font_manager as font_manager
 
-from matplotlib import rc
-rc('font', family='Times New Roman', size=10)
-font_prop = font_manager.FontProperties(size=9, family='serif')  # , family='serif'
-
-matplotlib.rcParams['lines.linewidth'] = 0.8
-
-
-def save_and_latex_figure(up, figure, name, save=1, extension=""):
+def save_figure(ap, figure, name, publish=True, name_ext="", ftype=".png", latex=False, dpi=150):
     """
     Saves a figure and produces python output.
-    :param figure:
-    :param name:
-    :param save: =1 temporary save, =2, for publication
-    :return:
+
+    :param ap: (module), all paths
+    :param figure: (Figure object)
+    :param name: (str), the name of the figure
+    :param publish: (bool) if True then save in publication location, else in temp dir
+    :param name_ext: (str) An extension for the file name
+    :param ftype: (str) the suffix for file type (e.g. '.png')
+    :param latex: (bool), if true then return a string of latex script to include the figure
+    :param dpi: (int), the dots per inch of the saved figure
+    :return: (str)
     """
     figure.tight_layout()
-    ftype = ".png"
-    if save == 1:
-        figure.savefig("/temp_output/" + name + ftype, dpi=150)
+
+    if not publish:
+        figure.savefig(ap.TEMP_FIGURE_PATH + name + name_ext + ftype, dpi=dpi)
     else:
-        figure.savefig(up.PUBLICATION_FIGURE_PATH + name + extension + ftype, dpi=400)
-    para = ""
-    para += "\\begin{figure}[H]\n"
-    para += "\centering\n"
-    para += "\\includegraphics{%s/%s%s}\n" % (up.FIGURE_FOLDER, name, ftype)
-    para += "\\caption{%s \label{fig: %s}}\n" % (name.replace("_", " "), name)
-    para += "\\end{figure}\n"
-    return para
+        figure.savefig(ap.PUBLICATION_FIGURE_PATH + name + name_ext + ftype, dpi=dpi)
+    if latex:
+        return latex_for_figure(ap, name, ftype)
+    return ""
+
+
+def latex_for_figure(ap, name, ftype):
+    str_parts = ["",
+                    "\\begin{figure}[H]",
+                    "\centering",
+                    "\\includegraphics{%s/%s%s}" % (ap.FIGURE_FOLDER, name, ftype),
+                    "\\caption{%s \label{fig: %s}}" % (name.replace("_", " "), name),
+                    "\\end{figure}"
+                 ]
+    return "\n".join(str_parts)
 
 
 def output_to_table(**kwargs):
