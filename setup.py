@@ -1,8 +1,8 @@
 from setuptools import setup
 
 setup(name='engformat',
-      version='0.1.3',
-      description='A series for tools for displaying engineering calculations according to the Engineering Standard Format',
+      version='0.1.4',
+      description='Tools for displaying engineering calculations according to the Engineering Standard Format',
       url='',
       author='Maxim Millen',
       author_email='millen@fe.up.pt',
@@ -12,7 +12,7 @@ setup(name='engformat',
     ],
     install_requires=[
         "numpy",
-        "bwplot",
+        "bwplot>=0.2.10",
         "sfsimodels"
     ],
       zip_safe=False)
