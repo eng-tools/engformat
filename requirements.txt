@@ -2,3 +2,8 @@ numpy
 matplotlib
 bwplot
 sfsimodels
+
+# dev requirements
+pytest
+nose
+pytest-pep8
