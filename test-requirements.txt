@@ -1,1 +1,4 @@
 mock
+pytest
+nose
+pytest-pep8

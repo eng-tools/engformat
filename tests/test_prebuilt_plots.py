@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib
+matplotlib.use('agg')
 from matplotlib.testing.decorators import image_comparison
 import matplotlib.pyplot as plt
 from bwplot import cbox
@@ -13,7 +14,7 @@ def test_basic_xy():
     y = x ** 2
     big_fig = plt.figure()
     sf = big_fig.add_subplot(111)
-    sf.plot(x, y, label="test")
+    sf.plot(x, y, label="test", c=cbox(2))
     esfp.xy(sf)
 
 
@@ -25,17 +26,6 @@ def test_pb_time_series():
     sf = big_fig.add_subplot(111)
     sf.plot(x, y, label="test")
     esfp.time_series(sf)
-
-
-@image_comparison(baseline_images=['pb_xy'], extensions=['png'])
-def test_pb_xy():
-    A = plt.figure(figsize=(6, 4))
-    P1 = A.add_subplot(111)
-    y = np.random.normal(size=1000).cumsum() + 3
-    x = np.arange(1000)
-    P1.plot(x, y, c=cbox(1), alpha=0.7, label='chur')
-    P1.set_xlabel('Time $[s]$')
-    esfp.xy(P1, x_origin=True, y_origin=True)
 
 
 @image_comparison(baseline_images=['pb_transfer_function'], extensions=['png'])
