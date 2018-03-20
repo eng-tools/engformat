@@ -1,7 +1,11 @@
 from setuptools import setup
 
+about = {}
+with open("engformat/__about__.py") as fp:
+    exec(fp.read(), about)
+
 setup(name='engformat',
-      version='0.1.6',
+      version=about['__version__'],
       description='Tools for displaying engineering calculations according to the Engineering Standard Format',
       url='',
       author='Maxim Millen',
