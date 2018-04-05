@@ -17,6 +17,8 @@ setup(name='engformat',
     install_requires=[
         "numpy",
         "bwplot>=0.2.10",
-        "sfsimodels"
+        "sfsimodels",
+        "matplotlib",
+        "eqsig"
     ],
       zip_safe=False)
