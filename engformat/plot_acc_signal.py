@@ -7,31 +7,27 @@ from eqsig.exceptions import SignalProcessingError
 from bwplot import cbox
 
 
-def plot_acc_sig_as_response_spectrum(acc_sig, **kwargs):
+def plot_acc_sig_as_response_spectrum(acc_sig, legend_off=False, label="", xaxis="frequency", sub_plot=None,
+                                      response_type='acceleration', ccbox="auto", xlog=True,
+                                      title=False):
     """
     Plot a response spectrum
 
     :param acc_sig: eqsig.AccSignal Object
-    :param kwargs:
+    :param legend_off: bool, no legend
+    :param label: str, legend label
+    :param xaxis: str, 'frequency' or 'time'
+    :param sub_plot: matplotlib.pyplot.subplot object
+    :param response_type: str, 'acceleration' or 'velocity' or 'displacement'
+    :param ccbox: int, cbox number
+    :param title: str, plot title
     :return:
     """
     acc_sig.generate_response_spectrum()
     plot_on = 1
-    legend_off = kwargs.get('legend_off', False)
-    # ratio = kwargs.get('ratio', False)
-    # info_str = kwargs.get('info_str', '')
 
-    label = kwargs.get('label', acc_sig.label)
-
-    time = kwargs.get('time', "frequency")
-    sub_plot = kwargs.get('sub_plot', 0)
-    response_type = kwargs.get('type', 'acceleration')
-    # colour = kwargs.get('colour', False)
-    ccbox = kwargs.get('ccbox', "auto")
-    scale = kwargs.get('scale', 1.0)
-    log_off = kwargs.get('log_off', False)
-    verbose = kwargs.get('verbose', 0)
-    title = kwargs.get('title', False)
+    if label == "":
+        label = acc_sig.label
 
     if response_type == 'acceleration':
         response = acc_sig.s_a
@@ -44,11 +40,11 @@ def plot_acc_sig_as_response_spectrum(acc_sig, **kwargs):
         y_label = 'Spectral displacement [$m$]'
     else:
         raise NotImplementedError
-    if sub_plot == 0:
+    if sub_plot is None:
         sub_plot = plt.figure().add_subplot(111)
     else:
         plot_on = 0
-    if time == "period":
+    if xaxis == "time":
         x_para = acc_sig.response_times
     else:
         x_para = 1 / acc_sig.response_times
@@ -57,14 +53,12 @@ def plot_acc_sig_as_response_spectrum(acc_sig, **kwargs):
             ccbox = len(sub_plot.lines)
     acc_sig.ccbox = ccbox
 
-    sub_plot.plot(x_para, response * scale, label=label, c=cbox(0 + acc_sig.ccbox), lw=0.7)
+    sub_plot.plot(x_para, response, label=label, c=cbox(0 + acc_sig.ccbox), lw=0.7)
 
-    if not log_off:
+    if xlog:
         sub_plot.set_xscale('log')
 
-    if time == "period":
-        if verbose:
-            print('setting x-axis as period')
+    if xaxis == "period":
         sub_plot.set_xlabel('Time period [s]')
         sub_plot.set_xlim([0, acc_sig.response_times[-1]])
     else:
