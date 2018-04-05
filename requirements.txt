@@ -3,3 +3,4 @@ matplotlib
 bwplot
 sfsimodels
 pytest
+eqsig
