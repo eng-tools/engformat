@@ -64,8 +64,3 @@ def test_spines_axes_positions():
     ax.spines['left'].set_color('none')
     ax.spines['bottom'].set_color('none')
 
-
-if __name__ == '__main__':
-    test_pb_xy()
-    plt.show()
-    # test_pb_timeseries()

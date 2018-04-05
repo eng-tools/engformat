@@ -20,10 +20,18 @@ def journal_figure(fig, figure_path, size="small"):
 
 def time_series(sp, **kwargs):
     balance = kwargs.get('balance', False)
-    origin = kwargs.get('origin', True)
+    x_axis = kwargs.get('x_axis', True)
+    x_origin = kwargs.get('x_origin', False)
+    y_origin = kwargs.get('y_origin', False)
     sp.yaxis.grid(True)
     tools.clean_chart(sp)
-    if origin:
+    xlim = sp.get_xlim()
+    ylim = sp.get_ylim()
+    if x_origin:
+        sp.set_xlim([0, xlim[1]])
+    if y_origin:
+        sp.set_ylim([0, ylim[1]])
+    if x_axis:
         sp.plot(sp.get_xlim(), [0, 0], c=cbox('dark gray'), ls='--', zorder=-1, lw=0.7)
     if balance:
         ylim = max(abs(sp.get_ylim()[0]), abs(sp.get_ylim()[1]))
