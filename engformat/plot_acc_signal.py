@@ -62,7 +62,6 @@ def plot_acc_sig_as_response_spectrum(acc_sig, legend_off=False, label="", xaxis
         sub_plot.set_xlabel('Time period [s]')
         sub_plot.set_xlim([0, acc_sig.response_times[-1]])
     else:
-        sub_plot.set_xscale('log')
         sub_plot.set_xlabel('Frequency [Hz]')
     sub_plot.set_ylabel(y_label)
 
@@ -72,7 +71,6 @@ def plot_acc_sig_as_response_spectrum(acc_sig, legend_off=False, label="", xaxis
     if legend_off is False:
         sub_plot.legend(loc='upper left', prop={'size': 8})
     if plot_on == 1:
-
         plt.show()
     else:
         return sub_plot
@@ -99,7 +97,7 @@ def plot_acc_sig_as_time_series(acc_sig, **kwargs):
     window = kwargs.get('window', [0, -1])
     ccbox = kwargs.get('ccbox', "auto")  # else integer
 
-    cut_index = np.array([0, len(acc_sig.motion)])
+    cut_index = np.array([0, len(acc_sig.values)])
     if window[0] != 0:
         cut_index[0] = int(window[0] / acc_sig.dt)
     if window[1] != -1:
@@ -113,18 +111,16 @@ def plot_acc_sig_as_time_series(acc_sig, **kwargs):
         ccbox = len(sub_plot.lines)
 
     if motion_type == "acceleration":
-        motion = acc_sig.motion[cut_index[0]:cut_index[1]]
+        motion = acc_sig.values[cut_index[0]:cut_index[1]]
         balance = True
     elif motion_type == "velocity":
-        acc_sig.calculate_displacements()
         motion = acc_sig.velocity[cut_index[0]:cut_index[1]]
         balance = True
     elif motion_type == "displacement":
-        acc_sig.calculate_displacements()
         motion = acc_sig.displacement[cut_index[0]:cut_index[1]]
         balance = False
     elif motion_type == "custom":
-        motion = acc_sig.motion[cut_index[0]:cut_index[1]]
+        motion = acc_sig.values[cut_index[0]:cut_index[1]]
         balance = False
     else:
         raise NotImplementedError
@@ -273,7 +269,7 @@ def plot_acc_sig_as_transfer_function(base_acc_sig, acc_sigs, **kwargs):
 
     for rec in acc_sigs:
         if smooth is False:
-            if rec.dt != base_acc_sig.dt or len(rec.motion) != len(base_acc_sig.motion):
+            if rec.dt != base_acc_sig.dt or len(rec.values) != len(base_acc_sig.values):
                 raise SignalProcessingError("Motion lengths and timestep do not match. "
                                             "Cannot build non-smooth spectrum")
             spectrum = abs(rec.fa_spectrum)
