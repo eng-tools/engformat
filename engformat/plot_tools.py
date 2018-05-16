@@ -34,6 +34,7 @@ def revamp_legend(sub_plot, ncol=1, **kwargs):
     single = kwargs.get('single', True)
     bbox_to_anchor = kwargs.get('bbox_to_anchor', False)
     prop = kwargs.get('prop', None)
+    add_handles = kwargs.get("add_handles", [])
 
     if single:
         handles, labels = sub_plot.get_legend_handles_labels()
@@ -43,6 +44,9 @@ def revamp_legend(sub_plot, ncol=1, **kwargs):
             if labels[qq] not in labs:
                 labs.append(labels[qq])
                 hands.append(handles[qq])
+        for hand in add_handles:
+            labs.append(hand.get_label())
+            hands.append(hand)
         sub_plot.legend(hands, labs, numpoints=1, handlelength=1, handletextpad=0.5, labelspacing=0.3, scatterpoints=1, loc=loc, ncol=ncol, prop=prop)
     else:
         sub_plot.legend(numpoints=1, handlelength=1, handletextpad=0.5, labelspacing=0.3, scatterpoints=1, loc=loc, ncol=ncol, prop=prop)
@@ -100,6 +104,11 @@ def restyle_lines(sub_plot, style="bw", **kwargs):
 
 
 def letter_code(subplots, loc="upper left"):
+    """
+    Adds a letter from a to z to the corner of each subplot.
+    """
+    # must be a flattened list of subplots.
+
     if loc == "upper left":
         x = 0.03
         y = 0.95
