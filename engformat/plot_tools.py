@@ -121,11 +121,12 @@ def letter_code(subplots, loc="upper left"):
     else:
         x = 0.03
         y = 0.5
-    letters = "abcdefghijk"
+    letters = "abcdefghijklmnopqrstuvwxyz"
+    flat_plots = subplots.flatten()
     for i in range(len(subplots)):
-        subplots[i].text(x, y, '(%s)' % letters[i],
+        flat_plots[i].text(x, y, '(%s)' % letters[i],
             verticalalignment='top', horizontalalignment='left',
-            transform=subplots[i].transAxes,
+            transform=flat_plots[i].transAxes,
             color='black', fontsize=9)
 
 

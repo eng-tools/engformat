@@ -36,8 +36,8 @@ def time_series(sp, **kwargs):
     if balance:
         ylim = max(abs(sp.get_ylim()[0]), abs(sp.get_ylim()[1]))
         sp.set_ylim([-ylim, ylim])
-    sp.tick_params(axis="both", which="both", bottom="on", top="off",
-                labelbottom="on", left="off", right="off", labelleft="on")
+    sp.tick_params(axis="both", which="both", bottom=True, top=False,
+                   labelbottom=True, left=True, right=False, labelleft=True)
     tools.trim_ticks(sp, balance=balance)
     if balance:
         ylim = max(abs(sp.get_ylim()[0]), abs(sp.get_ylim()[1]))
@@ -48,21 +48,21 @@ def new_time_series_plots(nrows=1):
 
     bf, sub_plots = plt.subplots(nrows=nrows, ncols=1, sharex=True)
     for sp in sub_plots:
-        sp.tick_params(axis="both", which="both", bottom="off", top="off",
-                labelbottom="off", left="off", right="off", labelleft="on")
-    sub_plots[-1].tick_params(axis="both", which="both", bottom="on", top="off",
-                labelbottom="on", left="off", right="off", labelleft="on")
+        sp.tick_params(axis="both", which="both", bottom=False, top=False,
+                                   labelbottom=True, left=False, right=False, labelleft=True)
+    sub_plots[-1].tick_params(axis="both", which="both", bottom=True, top=False,
+                   labelbottom=True, left=False, right=False, labelleft=True)
     return sub_plots
 
 
 def time_series_plots(sub_plots):
 
     for sp in sub_plots:
-        sp.tick_params(axis="both", which="both", bottom="off", top="off",
-                labelbottom="off", left="off", right="off", labelleft="on")
+        sp.tick_params.tick_params(axis="both", which="both", bottom=False, top=False,
+                                   labelbottom=True, left=False, right=False, labelleft=True)
         sp.set_xlabel("")
-    sub_plots[-1].tick_params(axis="both", which="both", bottom="on", top="off",
-                labelbottom="on", left="off", right="off", labelleft="on")
+    sub_plots[-1].tick_params(axis="both", which="both", bottom=True, top=False,
+                   labelbottom=True, left=False, right=False, labelleft=True)
     return sub_plots
 
 
@@ -81,8 +81,8 @@ def xy(sp, **kwargs):
     if y_grid:
         sp.xaxis.grid(True, c=cbox('light gray'), zorder=-6, ls="--")
     tools.clean_chart(sp)
-    sp.tick_params(axis="both", which="both", bottom="on", top="off",
-                   labelbottom="on", left="on", right="off", labelleft="on")
+    sp.tick_params(axis="both", which="both", bottom=True, top=False,
+                   labelbottom=True, left=True, right=False, labelleft=True)
     xlim = sp.get_xlim()
     ylim = sp.get_ylim()
     if x_origin:
@@ -102,7 +102,8 @@ def xy(sp, **kwargs):
         toplim = min(xlim[1], ylim[1])
         sp.plot([botlim, toplim], [botlim, toplim], c=cbox('mid gray'), zorder=-2)
         if parity == 2:
-            sp.fill_between([botlim, toplim], [botlim, 0.5 * toplim], [botlim, 2 * toplim], facecolor=cbox('mid gray'), zorder=-3, alpha=0.1)
+            sp.fill_between([botlim, toplim], [botlim, 0.5 * toplim], [botlim, 2 * toplim], facecolor=cbox('mid gray'),
+                            zorder=-3, alpha=0.1)
             # sp.plot([0, minlim], [0, 0.5 * minlim], c=cbox('mid gray'), zorder=-2)
 
 
@@ -116,8 +117,8 @@ def rotation_settlement(sp):
     # plot origin
     sp.plot([-xlim, xlim], [0, 0], c=cbox('dark gray'), zorder=-1)
     sp.plot([0, 0], [(sp.get_ylim()[0]), (sp.get_ylim()[1])], c=cbox('dark gray'), zorder=-2)
-    sp.tick_params(axis="both", which="both", bottom="on", top="off",
-                   labelbottom="on", left="on", right="off", labelleft="on")
+    sp.tick_params(axis="both", which="both", bottom=True, top=False,
+                   labelbottom=True, left=True, right=False, labelleft=True)
 
 
 def hysteresis(sp):
@@ -140,8 +141,8 @@ def hysteresis(sp):
     # plot origin
     sp.plot([-xlim, xlim], [0, 0], c=cbox('dark gray'), zorder=-1)
     sp.plot([0, 0], [-ylim, ylim], c=cbox('dark gray'), zorder=-2)
-    sp.tick_params(axis="both", which="both", bottom="on", top="off",
-                labelbottom="on", left="on", right="off", labelleft="on")
+    sp.tick_params(axis="both", which="both", bottom=True, top=False,
+                   labelbottom=True, left=True, right=False, labelleft=True)
 
 
 def transfer_function(sp, **kwargs):
@@ -166,8 +167,8 @@ def transfer_function(sp, **kwargs):
         z_value = line.get_zorder()
         line.set_zorder(z_value + 100)
     tools.clean_chart(sp)
-    sp.tick_params(axis="both", which="both", bottom="on", top="off",
-                   labelbottom="on", left="on", right="off", labelleft="on")
+    sp.tick_params(axis="both", which="both", bottom=True, top=False,
+                   labelbottom=True, left=True, right=False, labelleft=True)
     xlim = sp.get_xlim()
     ylim = sp.get_ylim()
     # set to xy origin:

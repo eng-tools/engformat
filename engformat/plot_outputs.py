@@ -23,15 +23,15 @@ def save_figure(ap, figure, name, publish=True, name_ext="", ftype=".png", latex
     else:
         figure.savefig(ap.PUBLICATION_FIGURE_PATH + name + name_ext + ftype, dpi=dpi)
     if latex:
-        return latex_for_figure(ap, name, ftype)
+        return latex_for_figure(ap.FIGURE_FOLDER, name, ftype)
     return ""
 
 
-def latex_for_figure(ap, name, ftype):
+def latex_for_figure(figure_folder_name, name, ftype):
     str_parts = ["",
                     "\\begin{figure}[H]",
                     "\centering",
-                    "\\includegraphics{%s/%s%s}" % (ap.FIGURE_FOLDER, name, ftype),
+                    "\\includegraphics{%s/%s%s}" % (figure_folder_name, name, ftype),
                     "\\caption{%s \label{fig: %s}}" % (name.replace("_", " "), name),
                     "\\end{figure}"
                  ]
