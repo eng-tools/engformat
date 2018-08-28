@@ -107,7 +107,7 @@ def letter_code(subplots, loc="upper left"):
     """
     Adds a letter from a to z to the corner of each subplot.
     """
-    # must be a flattened list of subplots.
+    subplots = np.array(subplots)
 
     if loc == "upper left":
         x = 0.03

@@ -77,9 +77,9 @@ def xy(sp, **kwargs):
     y_grid = kwargs.get('y_grid', True)
     ratio = kwargs.get('ratio', False)
     if x_grid:
-        sp.yaxis.grid(True, c=cbox('light gray'), zorder=-5, ls="--")
+        sp.yaxis.grid(True, c=cbox('light gray'), zorder=-500, ls="--")
     if y_grid:
-        sp.xaxis.grid(True, c=cbox('light gray'), zorder=-6, ls="--")
+        sp.xaxis.grid(True, c=cbox('light gray'), zorder=-600, ls="--")
     tools.clean_chart(sp)
     sp.tick_params(axis="both", which="both", bottom=True, top=False,
                    labelbottom=True, left=True, right=False, labelleft=True)
@@ -92,9 +92,9 @@ def xy(sp, **kwargs):
     xlim = sp.get_xlim()
     ylim = sp.get_ylim()
     if x_axis:
-        sp.plot([-xlim[1], xlim[1]], [0, 0], c=cbox('dark gray'), zorder=-1)
+        sp.axhline(0, c=cbox('dark gray'), zorder=0.6)
     if y_axis:
-        sp.plot([0, 0], [-ylim[1], ylim[1]], c=cbox('dark gray'), zorder=-2)
+        sp.axvline(0, c=cbox('dark gray'), zorder=0.55)
     if ratio:
         sp.plot(xlim, [1, 1], c=cbox('dark gray'), zorder=-3)
     if parity:
