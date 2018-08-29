@@ -117,10 +117,15 @@ def letter_code(subplots, loc="upper left"):
         y = 0.95
     elif loc == "lower left":
         x = 0.03
+        y = 0.1
+    elif loc == "lower right":
+        x = 0.1
         y = 0.5
+    elif isinstance(loc, tuple):
+        x = loc[0]
+        y = loc[1]
     else:
-        x = 0.03
-        y = 0.5
+        raise ValueError("loc must be position string or a tuple.")
     letters = "abcdefghijklmnopqrstuvwxyz"
     flat_plots = subplots.flatten()
     for i in range(len(subplots)):
