@@ -3,6 +3,7 @@ __author__ = 'maximmillen'
 import pickle
 
 from bwplot import cbox
+import numpy as np
 
 import engformat.plot_tools as tools
 import matplotlib.pyplot as plt
@@ -102,8 +103,9 @@ def xy(sp, **kwargs):
         toplim = min(xlim[1], ylim[1])
         sp.plot([botlim, toplim], [botlim, toplim], c=cbox('mid gray'), zorder=-2)
         if parity == 2:
-            sp.fill_between([botlim, toplim], [botlim, 0.5 * toplim], [botlim, 2 * toplim], facecolor=cbox('mid gray'),
-                            zorder=-3, alpha=0.1)
+            xs = np.logspace(np.log10(botlim), np.log10(toplim), 30)
+            sp.fill_between(xs, xs * 0.5, xs * 2, facecolor=cbox('mid gray'),
+                            zorder=-3, alpha=0.3)
             # sp.plot([0, minlim], [0, 0.5 * minlim], c=cbox('mid gray'), zorder=-2)
 
 
