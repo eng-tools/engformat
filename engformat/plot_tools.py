@@ -1,5 +1,5 @@
 __author__ = 'maximmillen'
-
+from matplotlib.collections import LineCollection
 
 import numpy as np
 
@@ -147,3 +147,17 @@ def clean_chart(ax):
     ax.yaxis.label.set_color(cbox('dark gray'))
     ax.xaxis.label.set_color(cbox('dark gray'))
     ax.tick_params(axis='y', colors='black', width=0, which='top')
+
+
+def plot_multicolor_line(splot, x, y, z, cmap=None, vmin=None, vmax=None, lw=None, label=None):
+    # Based on the matplotlib example: https://matplotlib.org/gallery/lines_bars_and_markers/multicolored_line.html
+    points = np.array([x, y]).T.reshape(-1, 1, 2)
+    segments = np.concatenate([points[:-1], points[1:]], axis=1)
+    lc = LineCollection(segments, cmap=cmap)
+    lc.set_array(z)
+    lc.set_clim(vmin=vmin, vmax=vmax)
+    if lw is not None:
+        lc.set_linewidth(lw)
+    if label is not None:
+        lc.set_label(label)
+    return splot.add_collection(lc)
