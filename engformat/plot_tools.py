@@ -1,6 +1,6 @@
 __author__ = 'maximmillen'
 from matplotlib.collections import LineCollection
-
+import matplotlib.transforms
 import numpy as np
 
 from bwplot import cbox
@@ -149,11 +149,15 @@ def clean_chart(ax):
     ax.tick_params(axis='y', colors='black', width=0, which='top')
 
 
-def plot_multicolor_line(splot, x, y, z, cmap=None, vmin=None, vmax=None, lw=None, label=None):
+def plot_multicolor_line(splot, x, y, z, cmap=None, vmin=None, vmax=None, lw=None, label=None, off_x=0, off_y=0):
     # Based on the matplotlib example: https://matplotlib.org/gallery/lines_bars_and_markers/multicolored_line.html
     points = np.array([x, y]).T.reshape(-1, 1, 2)
     segments = np.concatenate([points[:-1], points[1:]], axis=1)
-    lc = LineCollection(segments, cmap=cmap)
+    xo = np.ones(len(segments)) * off_x
+    yo = np.ones(len(segments)) * off_y
+    # xyo = list(zip(xo, yo))
+    xyo = np.array([xo, yo]).T
+    lc = LineCollection(segments, cmap=cmap, offsets=xyo, transOffset=matplotlib.transforms.IdentityTransform())
     lc.set_array(z)
     lc.set_clim(vmin=vmin, vmax=vmax)
     if lw is not None:
