@@ -74,16 +74,16 @@ def xy(sp, **kwargs):
     x_axis = kwargs.get('x_axis', False)
     y_axis = kwargs.get('y_axis', False)
     parity = kwargs.get('parity', False)
-    x_grid = kwargs.get('x_grid', True)
-    y_grid = kwargs.get('y_grid', True)
+    x_grid = kwargs.get('x_grid', False)
+    y_grid = kwargs.get('y_grid', False)
     ratio = kwargs.get('ratio', False)
     if x_grid:
         sp.yaxis.grid(True, c=cbox('light gray'), zorder=-500, ls="--")
     if y_grid:
         sp.xaxis.grid(True, c=cbox('light gray'), zorder=-600, ls="--")
     tools.clean_chart(sp)
-    sp.tick_params(axis="both", which="both", bottom=True, top=False,
-                   labelbottom=True, left=True, right=False, labelleft=True)
+    sp.tick_params(axis="both", which="both", top=False,
+                   right=False)
     xlim = sp.get_xlim()
     ylim = sp.get_ylim()
     if x_origin:
@@ -103,7 +103,10 @@ def xy(sp, **kwargs):
         toplim = min(xlim[1], ylim[1])
         sp.plot([botlim, toplim], [botlim, toplim], c=cbox('mid gray'), zorder=-2)
         if parity == 2:
-            xs = np.logspace(np.log10(botlim), np.log10(toplim), 30)
+            if botlim == 0.0:
+                xs = np.linspace(botlim, toplim, 2)
+            else:
+                xs = np.logspace(np.log10(botlim), np.log10(toplim), 30)
             sp.fill_between(xs, xs * 0.5, xs * 2, facecolor=cbox('mid gray'),
                             zorder=-3, alpha=0.3)
             # sp.plot([0, minlim], [0, 0.5 * minlim], c=cbox('mid gray'), zorder=-2)

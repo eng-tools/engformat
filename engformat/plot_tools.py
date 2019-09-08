@@ -47,11 +47,16 @@ def revamp_legend(sub_plot, ncol=1, **kwargs):
         for hand in add_handles:
             labs.append(hand.get_label())
             hands.append(hand)
-        sub_plot.legend(hands, labs, numpoints=1, handlelength=1, handletextpad=0.5, labelspacing=0.3, scatterpoints=1, loc=loc, ncol=ncol, prop=prop)
+
     else:
-        sub_plot.legend(numpoints=1, handlelength=1, handletextpad=0.5, labelspacing=0.3, scatterpoints=1, loc=loc, ncol=ncol, prop=prop)
+        hands, labs = sub_plot.get_legend_handles_labels()
+
     if bbox_to_anchor != False:
-        sub_plot.legend(numpoints=1, handlelength=1, handletextpad=0.5, labelspacing=0.3, scatterpoints=1, loc=loc, ncol=ncol, bbox_to_anchor=bbox_to_anchor, prop=prop)
+        sub_plot.legend(hands, labs, numpoints=1, handlelength=1, handletextpad=0.5, labelspacing=0.3, scatterpoints=1,
+                        loc=loc, ncol=ncol, bbox_to_anchor=bbox_to_anchor, prop=prop)
+    else:
+        sub_plot.legend(hands, labs, numpoints=1, handlelength=1, handletextpad=0.5, labelspacing=0.3, scatterpoints=1,
+                        loc=loc, ncol=ncol, prop=prop)
     # borderpad    the fractional whitespace inside the legend border
     # shadow    if True, draw a shadow behind legend
     # framealpha    If not None, alpha channel for the frame.
@@ -77,6 +82,7 @@ def revamp_legend(sub_plot, ncol=1, **kwargs):
     for tt in ltext:
         tt.set_color('0.1')
         # tt.set_size(7)
+    return leg
 
 
 def restyle_lines(sub_plot, style="bw", **kwargs):
