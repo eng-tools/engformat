@@ -1,6 +1,5 @@
 language: python
 python:
-  - "3.6"
   - "3.7"
 # command to install dependencies
 install:
@@ -17,10 +16,10 @@ before_deploy:
 #  - python setup.py bdist_wheel  # this runs automatically
 deploy:
   provider: pypi
-  user: __token__
-  password: PYPITOKEN
+  user: PYPI_USER
+  password: PYPI_PW
   distributions: "sdist bdist_wheel"
-  skip_existing: true  # used since two python versions
+#  skip_existing: true  # used since two python versions
   on:
 #    tags: true
     branch: master  # this is default anyway
