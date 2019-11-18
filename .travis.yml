@@ -14,7 +14,7 @@ after_success:
   - coveralls   # uploads reports to coveralls.io
 before_deploy:
   - pip install -r deploy-requirements.txt
-  - python setup.py bdist_wheel
+#  - python setup.py bdist_wheel  # this runs automatically
 deploy:
   provider: pypi
   user: __token__
@@ -22,5 +22,5 @@ deploy:
   distributions: "sdist bdist_wheel"
   skip_existing: true  # used since two python versions
   on:
-    tags: true
+#    tags: true
     branch: master  # this is default anyway
