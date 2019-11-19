@@ -13,7 +13,7 @@ before_deploy:
 - pip install -r deploy-requirements.txt
 deploy:
   provider: pypi
-  user: PYPI_USER
+  user: seismicode_python
   distributions: sdist bdist_wheel
   on:
     branch: master
