@@ -1,25 +1,21 @@
 language: python
 python:
-  - "3.7"
-# command to install dependencies
+- '3.7'
 install:
-  - pip install -r requirements.txt
-  - pip install -r test-requirements.txt
-  - pip install python-coveralls
-# command to run tests
+- pip install -r requirements.txt
+- pip install -r test-requirements.txt
+- pip install python-coveralls
 script:
-  - py.test # or py.test for Python versions 3.5 and below
+- py.test
 after_success:
-  - coveralls   # uploads reports to coveralls.io
+- coveralls   # uploads reports to coveralls.io
 before_deploy:
-  - pip install -r deploy-requirements.txt
-#  - python setup.py bdist_wheel  # this runs automatically
+- pip install -r deploy-requirements.txt
 deploy:
   provider: pypi
   user: PYPI_USER
-  password: PYPI_PW
-  distributions: "sdist bdist_wheel"
-#  skip_existing: true  # used since two python versions
+  distributions: sdist bdist_wheel
   on:
-#    tags: true
-    branch: master  # this is default anyway
+    branch: master
+  password:
+    secure: JTzNfJe1oac1sMaay2d0rqCR8qWsm7m5StZjaH3SFG8BHIcsRTmhUwubfdATG+dk13JwfoC3p1cF7TzSBm1wt/4jD7C4MWhTsEMXLiuwLsC4PIA2X4GPkgZtiAIaBA4Zk5YUoooGlp+TLjdgQMsVkbXYXTh2D01KkqKjhCOoModTK8gQxfGCKitzai95S2Kb/0kzYD5J6MLTxJNfwRrOPorDRE4J2IxWIWvTkdd4j4a34lOkHjbDrYqXUWZb8xJyNN+kAbIQEsOmyKyPS9KkIQu1KAB+oQ6h7KlPDoaFaaq5T2RgJWTqK0THFwc8wyWOq8evwgGictD0+RcnJJ6tSybaRhoTLf1crKUabgpElxLYWUOZaNTY20esWWO5qGD3Eyg1Iw60ZDqu9X5VOg1uHWCU7YvIL5iJRcN4kyk+LtdE9DYAqWs8VJn+l63phzBEZH5XH5gw8i4M3HOIKnAJqUXNp5zDsIKO0zCur78HnuF7UzJ4mLO/KssfkavAkmuXqhjLbW9iyJmOn2yc54KYhAyAvhSAUcOvxM83xr062Kwtd1P7oZEVBCQaHzN/bTX90yINWU34voUl+dSeN5ERWs7oD4UkcTZUDpO8ZbkMTIU/ZKJvV4R2hAzuQP/H6igt4lGVXrzWvsv5hNON9nmbeKiqhdzt8e2amTYUjaBsZOQ=
