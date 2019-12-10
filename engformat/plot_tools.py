@@ -156,6 +156,9 @@ def clean_chart(ax):
 
 
 def plot_multicolor_line(splot, x, y, z, cmap=None, vmin=None, vmax=None, lw=None, label=None, off_x=0, off_y=0):
+    """
+    Adds a line to a plot that changes color based on the z-value and a cmap
+    """
     # Based on the matplotlib example: https://matplotlib.org/gallery/lines_bars_and_markers/multicolored_line.html
     points = np.array([x, y]).T.reshape(-1, 1, 2)
     segments = np.concatenate([points[:-1], points[1:]], axis=1)
@@ -171,3 +174,19 @@ def plot_multicolor_line(splot, x, y, z, cmap=None, vmin=None, vmax=None, lw=Non
     if label is not None:
         lc.set_label(label)
     return splot.add_collection(lc)
+
+
+def add_cmap_background(splot, cmap, vmin, vmax, ory='x', se=(0, 1)):
+    """
+    Adds a background image based on a cmap
+    """
+    gradient = np.linspace(0, vmin, vmax)
+
+    # gradient = np.linspace(0, 1, 256)
+    gradient = np.vstack((gradient, gradient))
+    if ory == 'x':
+        extent = (vmin, vmax, se[0], se[1])
+    else:
+        extent = (se[0], se[1], vmin, vmax)
+        gradient = gradient.T
+    splot.imshow(gradient, aspect='auto', cmap=cmap, vmin=vmin, vmax=vmax, extent=extent)
