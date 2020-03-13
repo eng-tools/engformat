@@ -9,7 +9,10 @@ import engformat.plot_tools as tools
 import matplotlib.pyplot as plt
 
 from matplotlib import rc
-rc('font', family='Times New Roman', size=10)
+rc('font', family='Helvetica', size=9, weight='light')
+# matplotlib.rcParams['font.family'] = 'Times New Roman'
+# matplotlib.rcParams['font.size'] = '9'
+# matplotlib.rcParams['font.weight'] = 'light'
 import matplotlib
 
 
