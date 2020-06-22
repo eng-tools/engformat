@@ -33,7 +33,7 @@ def output_obj_to_table(obj, olist='inputs', oformat='latex', table_ends=False, 
     return para
 
 
-def output_df_to_table(df, headers=None, oformat='latex', table_ends=False, prefix=""):
+def output_df_to_table(df, headers=None, oformat='latex', table_ends=False, prefix="", caption="caption-text", label="table"):
     """
     Compiles a Dataframe to a table.
 
@@ -57,7 +57,7 @@ def output_df_to_table(df, headers=None, oformat='latex', table_ends=False, pref
         paras.append('&'.join(line) + '\\\\')
     para = '\n'.join(paras)
     if table_ends:
-        para = add_table_ends(para, oformat, np=len(df.columns), header=la_header)
+        para = add_table_ends(para, oformat, np=len(df.columns), header=la_header, caption=caption, label=label)
     return para
 
 

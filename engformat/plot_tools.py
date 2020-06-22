@@ -91,9 +91,9 @@ def restyle_lines(sub_plot, style="bw", **kwargs):
     """
 
     if style == "bw":
-        from bwplot.colours import cbox as cs
+        from bwplot import cbox as cs
     elif style == "spectra":
-        from bwplot.colours import spectra as cs
+        from bwplot import spectra as cs
 
     lines = sub_plot.lines
     labs = {}
@@ -190,3 +190,149 @@ def add_cmap_background(splot, cmap, vmin, vmax, ory='x', se=(0, 1)):
         extent = (se[0], se[1], vmin, vmax)
         gradient = gradient.T
     splot.imshow(gradient, aspect='auto', cmap=cmap, vmin=vmin, vmax=vmax, extent=extent)
+
+
+def plot_std_dev_bounds_vs_x(sps, x, y, xspace=15, pcol='blue', scol='orange'):
+
+    if min(x) == max(x):
+        return
+    bins = np.linspace(min(x), max(x), xspace)
+    try:
+        nav, _ = np.histogram(x, bins=bins)
+    except ValueError:
+        return
+    pps = list(nav)
+    if pps.count(0) < 8:
+        sy, _ = np.histogram(x, bins=bins, weights=y)
+        sy2, _ = np.histogram(x, bins=bins, weights=y * y)
+        mean = sy / nav
+        std = np.sqrt(sy2 / nav - mean * mean)
+        xxx = (_[1:] + _[:-1]) / 2
+        base = []
+        h1 = []
+        m_new = []
+        h2 = []
+        cc = 0
+        no_dist = 0
+        for u in range(len(std)):
+            if np.isnan(std[u]):
+                cc += 0  # change this to 1 if you want limit
+            else:
+                base.append(xxx[u])
+                h1.append(mean[u] - std[u])
+                m_new.append(mean[u])
+                h2.append(mean[u] + std[u])
+                cc = 0
+            if cc >= 2:
+                no_dist = 1
+        if no_dist == 0:
+            sps.plot(base, m_new, c=pcol, label='Mean')
+            sps.fill_between(base, h1, h2, facecolor=scol, alpha=0.3)
+            sps.plot(base, h1, c=scol, alpha=0.5, label='Std dev.')
+            sps.plot(base, h2, c=scol, alpha=0.5)
+
+
+def get_percentile_vs_x(x, y, q=25, nbins=15, sorted=True):
+    bins = np.linspace(min(x), max(x), nbins + 1)
+
+    if not sorted:
+        inds = np.argsort(x)
+        x = x[inds]
+        y = y[inds]
+
+    inds = np.digitize(x, bins[1:], right=True)  # assume x data is sorted
+    base = []
+    h1 = []
+    m_new = []
+    h2 = []
+    cc = 0
+    no_dist = 0
+    for j in range(0, nbins):
+        lh = np.searchsorted(inds, j, side='left')
+        rh = np.searchsorted(inds, j, side='right')
+
+        if lh == rh:
+            cc += 0  # change this to 1 if you want limit
+        else:
+            vals = y[lh:rh]
+            xxx = (x[lh:lh+1][0] + x[rh-1:rh][0]) / 2
+            median = np.median(vals)
+            p_lb = np.percentile(vals, q)
+            p_ub = np.percentile(vals, 100 - q)
+
+            base.append(xxx)
+            h1.append(p_lb)
+            m_new.append(median)
+            h2.append(p_ub)
+            cc = 0
+    return np.array(base), np.array(m_new), np.array(h1), np.array(h2)
+
+
+def plot_percentile_bounds_vs_x(sps, x, y, q=25, nbins=15, pcol='blue', scol='orange', sorted=True, line_alpha=1):
+    """
+    Plots the q and 100-q as well as the median
+
+    :param sps:
+    :param x:
+    :param y:
+    :param q: float
+        Percentage
+    :param xspace:
+    :param pcol:
+    :param scol:
+    :return:
+    """
+    if min(x) == max(x):
+        return
+    bins = np.linspace(min(x), max(x), nbins + 1)
+
+    if not sorted:
+        inds = np.argsort(x)
+        x = x[inds]
+        y = y[inds]
+
+    inds = np.digitize(x, bins[1:], right=True)  # assume x data is sorted
+    base = []
+    h1 = []
+    m_new = []
+    h2 = []
+    cc = 0
+    no_dist = 0
+    for j in range(0, nbins):
+        lh = np.searchsorted(inds, j, side='left')
+        rh = np.searchsorted(inds, j, side='right')
+
+        if lh == rh:
+            cc += 0  # change this to 1 if you want limit
+        else:
+            vals = y[lh:rh]
+            xxx = (x[lh:lh+1][0] + x[rh-1:rh][0]) / 2
+            median = np.median(vals)
+            p_lb = np.percentile(vals, q)
+            p_ub = np.percentile(vals, 100 - q)
+
+            base.append(xxx)
+            h1.append(p_lb)
+            m_new.append(median)
+            h2.append(p_ub)
+            cc = 0
+        if cc >= 2:
+            no_dist = 1
+    if no_dist == 0:
+        sps.plot(base, m_new, c=pcol, label='Mean')
+        sps.fill_between(base, h1, h2, facecolor=scol, alpha=0.3)
+        sps.plot(base, h1, c=scol, alpha=line_alpha, label='Std dev.')
+        sps.plot(base, h2, c=scol, alpha=line_alpha)
+
+
+def run_plot_percentile_bounds():
+    x = [1, 1, 1, 3, 3, 5, 5, 5]
+    y = np.arange(len(x))
+    import matplotlib.pyplot as plt
+    bf, sps = plt.subplots()
+    plot_percentile_bounds_vs_x(sps, x, y, 25, nbins=3)
+    plt.show()
+
+
+if __name__ == '__main__':
+    run_plot_percentile_bounds()

@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 
 from matplotlib import rc
 rc('font', family='Helvetica', size=9, weight='light')
+plt.rcParams['pdf.fonttype'] = 42
+plt.rcParams['ps.fonttype'] = 42  # To avoid type 3 fonts
 # matplotlib.rcParams['font.family'] = 'Times New Roman'
 # matplotlib.rcParams['font.size'] = '9'
 # matplotlib.rcParams['font.weight'] = 'light'
@@ -84,6 +86,7 @@ def xy(sp, **kwargs):
         sp.yaxis.grid(True, c=cbox('light gray'), zorder=-500, ls="--")
     if y_grid:
         sp.xaxis.grid(True, c=cbox('light gray'), zorder=-600, ls="--")
+    sp.set_axisbelow(True)
     tools.clean_chart(sp)
     sp.tick_params(axis="both", which="both", top=False,
                    right=False)
