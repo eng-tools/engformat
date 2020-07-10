@@ -1,5 +1,7 @@
 __author__ = 'maximmillen'
 from matplotlib.collections import LineCollection
+from matplotlib.lines import Line2D
+from matplotlib import patches as mpatches
 import matplotlib.transforms
 import numpy as np
 
@@ -29,12 +31,22 @@ def trim_ticks(sub_plot, **kwargs):
     sub_plot.set_yticks(yticks)
 
 
+def create_custom_legend_line(label, ls, c, mk, ms=5):
+
+    return Line2D([0], [0], marker=mk, color=c, label=label,
+               markerfacecolor=c, markersize=ms)
+
+def create_custom_legend_patch(label, c, alpha=1):
+    return mpatches.Patch(color=c, label=label, alpha=alpha)
+
+
 def revamp_legend(sub_plot, ncol=1, **kwargs):
     loc = kwargs.get('loc', 'upper right')
     single = kwargs.get('single', True)
     bbox_to_anchor = kwargs.get('bbox_to_anchor', False)
     prop = kwargs.get('prop', None)
     add_handles = kwargs.get("add_handles", [])
+    fixed_color = kwargs.get('fixed_color', None)
 
     if single:
         handles, labels = sub_plot.get_legend_handles_labels()
@@ -43,6 +55,8 @@ def revamp_legend(sub_plot, ncol=1, **kwargs):
         for qq in range(len(labels)):
             if labels[qq] not in labs:
                 labs.append(labels[qq])
+                if fixed_color:
+                    handles[qq].set_color(fixed_color)
                 hands.append(handles[qq])
         for hand in add_handles:
             labs.append(hand.get_label())
