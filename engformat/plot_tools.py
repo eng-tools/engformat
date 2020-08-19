@@ -31,10 +31,11 @@ def trim_ticks(sub_plot, **kwargs):
     sub_plot.set_yticks(yticks)
 
 
-def create_custom_legend_line(label, ls, c, mk, ms=5):
-
-    return Line2D([0], [0], marker=mk, color=c, label=label,
-               markerfacecolor=c, markersize=ms)
+def create_custom_legend_line(label, ls, c, mk, ms=5, mfc=None):
+    if mfc is None:
+        mfc = c
+    return Line2D([0], [0], ls=ls, marker=mk, color=c, label=label,
+               markerfacecolor=mfc, markersize=ms)
 
 def create_custom_legend_patch(label, c, alpha=1):
     return mpatches.Patch(color=c, label=label, alpha=alpha)
@@ -123,36 +124,50 @@ def restyle_lines(sub_plot, style="bw", **kwargs):
         lines[i].set_color(cs(labs[label]))
 
 
-def letter_code(subplots, loc="upper left"):
+def text_at_rel_pos(subplot, x, y, text, valign='center', halign='center', color='k'):
+    subplot.text(x, y, text,
+                       verticalalignment=valign, horizontalalignment=halign,
+                       transform=subplot.transAxes,
+                       color=color, fontsize=8)
+
+
+def letter_code(subplots, loc="upper left", col=None):
     """
     Adds a letter from a to z to the corner of each subplot.
     """
     subplots = np.array(subplots)
-
+    nps = len(subplots)
     if loc == "upper left":
-        x = 0.03
-        y = 0.95
+        x = 0.03 * np.ones(nps)
+        y = 0.95 * np.ones(nps)
     elif loc == "upper right":
-        x = 0.9
-        y = 0.95
+        x = 0.85 * np.ones(nps)
+        y = 0.98 * np.ones(nps)
     elif loc == "lower left":
-        x = 0.03
-        y = 0.1
+        x = 0.03 * np.ones(nps)
+        y = 0.5 * np.ones(nps)
     elif loc == "lower right":
-        x = 0.1
-        y = 0.5
-    elif isinstance(loc, tuple):
+        x = 0.03 * np.ones(nps)
+        y = 0.5 * np.ones(nps)
+    else:
         x = loc[0]
         y = loc[1]
-    else:
-        raise ValueError("loc must be position string or a tuple.")
+
     letters = "abcdefghijklmnopqrstuvwxyz"
     flat_plots = subplots.flatten()
+    if col is None:
+        col = [1] * len(subplots)
+    else:
+        assert len(col) == len(flat_plots)
     for i in range(len(subplots)):
-        flat_plots[i].text(x, y, '(%s)' % letters[i],
+        if col[i]:
+            color = 'black'
+        else:
+            color = 'white'
+        flat_plots[i].text(x[i], y[i], '(%s)' % letters[i],
             verticalalignment='top', horizontalalignment='left',
             transform=flat_plots[i].transAxes,
-            color='black', fontsize=9)
+            color=color, fontsize=8)
 
 
 def clean_chart(ax):
@@ -166,12 +181,12 @@ def clean_chart(ax):
         ax.spines[edge].set_linewidth(0.4)
     ax.yaxis.label.set_color(cbox('dark gray'))
     ax.xaxis.label.set_color(cbox('dark gray'))
-    ax.tick_params(axis='y', colors='black', width=0, which='top')
+    ax.tick_params(axis='y', colors='black', width=0, which='major', top=True)
 
 
 def plot_multicolor_line(splot, x, y, z, cmap=None, vmin=None, vmax=None, lw=None, label=None, off_x=0, off_y=0):
     """
-    Adds a line to a plot that changes color based on the z-value and a cmap
+    Adds a line to a plot that changes color based on the z-value and a cmap (default=viridis)
     """
     # Based on the matplotlib example: https://matplotlib.org/gallery/lines_bars_and_markers/multicolored_line.html
     points = np.array([x, y]).T.reshape(-1, 1, 2)
@@ -335,7 +350,8 @@ def plot_percentile_bounds_vs_x(sps, x, y, q=25, nbins=15, pcol='blue', scol='or
     if no_dist == 0:
         sps.plot(base, m_new, c=pcol, label='Mean')
         sps.fill_between(base, h1, h2, facecolor=scol, alpha=0.3)
-        sps.plot(base, h1, c=scol, alpha=line_alpha, label='Std dev.')
+        lab = f'{q} - {100-q} %'
+        sps.plot(base, h1, c=scol, alpha=line_alpha, label=lab)
         sps.plot(base, h2, c=scol, alpha=line_alpha)
 
 
