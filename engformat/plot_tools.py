@@ -181,7 +181,8 @@ def clean_chart(ax):
         ax.spines[edge].set_linewidth(0.4)
     ax.yaxis.label.set_color(cbox('dark gray'))
     ax.xaxis.label.set_color(cbox('dark gray'))
-    ax.tick_params(axis='y', colors='black', width=0, which='major', top=True)
+    ax.tick_params(axis='x', colors=(0.05, 0.05, 0.05), width=0.5, which='major', top=True)
+    ax.tick_params(axis='y', colors=(0.05, 0.05, 0.05), width=0.5, which='major', left=True)
 
 
 def plot_multicolor_line(splot, x, y, z, cmap=None, vmin=None, vmax=None, lw=None, label=None, off_x=0, off_y=0):
