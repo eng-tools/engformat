@@ -31,7 +31,7 @@ def trim_ticks(sub_plot, **kwargs):
     sub_plot.set_yticks(yticks)
 
 
-def create_custom_legend_line(label, ls, c, mk, ms=5, mfc=None):
+def create_custom_legend_line(label, ls, c, mk=None, ms=5, mfc=None):
     if mfc is None:
         mfc = c
     return Line2D([0], [0], ls=ls, marker=mk, color=c, label=label,
@@ -48,6 +48,7 @@ def revamp_legend(sub_plot, ncol=1, **kwargs):
     prop = kwargs.get('prop', None)
     add_handles = kwargs.get("add_handles", [])
     fixed_color = kwargs.get('fixed_color', None)
+    handlelength = kwargs.get('handlelength', 1)
 
     if single:
         handles, labels = sub_plot.get_legend_handles_labels()
@@ -67,10 +68,10 @@ def revamp_legend(sub_plot, ncol=1, **kwargs):
         hands, labs = sub_plot.get_legend_handles_labels()
 
     if bbox_to_anchor != False:
-        sub_plot.legend(hands, labs, numpoints=1, handlelength=1, handletextpad=0.5, labelspacing=0.3, scatterpoints=1,
+        sub_plot.legend(hands, labs, numpoints=1, handlelength=handlelength, handletextpad=0.5, labelspacing=0.3, scatterpoints=1,
                         loc=loc, ncol=ncol, bbox_to_anchor=bbox_to_anchor, prop=prop)
     else:
-        sub_plot.legend(hands, labs, numpoints=1, handlelength=1, handletextpad=0.5, labelspacing=0.3, scatterpoints=1,
+        sub_plot.legend(hands, labs, numpoints=1, handlelength=handlelength, handletextpad=0.5, labelspacing=0.3, scatterpoints=1,
                         loc=loc, ncol=ncol, prop=prop)
     # borderpad    the fractional whitespace inside the legend border
     # shadow    if True, draw a shadow behind legend
@@ -145,7 +146,7 @@ def letter_code(subplots, loc="upper left", col=None):
         y = 0.98 * np.ones(nps)
     elif loc == "lower left":
         x = 0.03 * np.ones(nps)
-        y = 0.5 * np.ones(nps)
+        y = 0.09 * np.ones(nps)
     elif loc == "lower right":
         x = 0.03 * np.ones(nps)
         y = 0.5 * np.ones(nps)

@@ -99,9 +99,9 @@ def xy(sp, **kwargs):
     xlim = sp.get_xlim()
     ylim = sp.get_ylim()
     if x_axis:
-        sp.axhline(0, c=cbox('dark gray'), zorder=0.6)
+        sp.axhline(0, c=cbox('dark gray'), zorder=0.6, lw=0.85)
     if y_axis:
-        sp.axvline(0, c=cbox('dark gray'), zorder=0.55)
+        sp.axvline(0, c=cbox('dark gray'), zorder=0.55, lw=0.85)
     if ratio:
         sp.plot(xlim, [1, 1], c=cbox('dark gray'), zorder=-3)
     if parity:
