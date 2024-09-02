@@ -33,7 +33,8 @@ def output_obj_to_table(obj, olist='inputs', oformat='latex', table_ends=False, 
     return para
 
 
-def output_df_to_table(df, headers=None, oformat='latex', table_ends=False, prefix="", caption="caption-text", label="table"):
+def output_df_to_table(df, headers=None, oformat='latex', table_ends=False, prefix="", caption="caption-text",
+                       label="table", align='c'):
     """
     Compiles a Dataframe to a table.
 
@@ -57,7 +58,8 @@ def output_df_to_table(df, headers=None, oformat='latex', table_ends=False, pref
         paras.append('&'.join(line) + '\\\\')
     para = '\n'.join(paras)
     if table_ends:
-        para = add_table_ends(para, oformat, np=len(df.columns), header=la_header, caption=caption, label=label)
+        para = add_table_ends(para, oformat, np=len(df.columns), header=la_header, caption=caption, label=label,
+                              align=align)
     return para
 
 
@@ -115,6 +117,8 @@ def add_table_ends(para, oformat='latex', caption="caption-text", label="table",
     fpara = ""
     if oformat == 'latex':
         fpara += "\\begin{table}[H]\n"
+        if caption is not None:
+            fpara += "\\caption{%s \label{tab:%s}}\n" % (caption, label)
         fpara += "\\centering\n"
         fpara += "\\begin{tabular}{%s}\n" % a_str
         fpara += "\\toprule\n"
@@ -122,9 +126,8 @@ def add_table_ends(para, oformat='latex', caption="caption-text", label="table",
             fpara += f"{header} \\\\\n"
         fpara += "\\midrule\n"
         fpara += para
-        fpara += "\\bottomrule\n"
+        fpara += "\n\\bottomrule\n"
         fpara += "\\end{tabular}\n"
-        fpara += "\\caption{%s \label{tab:%s}}\n" % (caption, label)
         fpara += "\\end{table}\n\n"
     return fpara
 

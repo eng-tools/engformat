@@ -82,6 +82,10 @@ def xy(sp, **kwargs):
     x_grid = kwargs.get('x_grid', False)
     y_grid = kwargs.get('y_grid', False)
     ratio = kwargs.get('ratio', False)
+    y_bal = kwargs.get('y_bal', False)
+    if y_bal:
+        ylim = max(abs(sp.get_ylim()[0]), abs(sp.get_ylim()[1]))
+        sp.set_ylim([-ylim, ylim])
     if x_grid:
         sp.yaxis.grid(True, c=cbox('light gray'), zorder=-500, ls="--")
     if y_grid:
@@ -99,22 +103,27 @@ def xy(sp, **kwargs):
     xlim = sp.get_xlim()
     ylim = sp.get_ylim()
     if x_axis:
-        sp.axhline(0, c=cbox('dark gray'), zorder=0.6, lw=0.85)
+        sp.axhline(0, c=cbox('mid gray'), zorder=0.6, lw=0.85)
     if y_axis:
-        sp.axvline(0, c=cbox('dark gray'), zorder=0.55, lw=0.85)
+        sp.axvline(0, c=cbox('mid gray'), zorder=0.55, lw=0.85)
     if ratio:
         sp.plot(xlim, [1, 1], c=cbox('dark gray'), zorder=-3)
     if parity:
-        botlim = min(xlim[0], ylim[0])
-        toplim = min(xlim[1], ylim[1])
+        botlim = max(min(xlim[0], ylim[0]), 0)
+        toplim = max(xlim[1], ylim[1])
         sp.plot([botlim, toplim], [botlim, toplim], c=cbox('mid gray'), zorder=-2)
-        if parity == 2:
+        if parity != 0:
             if botlim == 0.0:
                 xs = np.linspace(botlim, toplim, 2)
             else:
                 xs = np.logspace(np.log10(botlim), np.log10(toplim), 30)
-            sp.fill_between(xs, xs * 0.5, xs * 2, facecolor=cbox('mid gray'),
+            sp.fill_between(xs, xs * 1 / parity, xs * parity, facecolor=cbox('mid gray'),
                             zorder=-3, alpha=0.3)
+            # ef.text_at_pos(ax[0], 0.16, 1.5 * 0.16, '1.5:1', bbox=dict(facecolor='white', ec='none', alpha=0.7))
+            # ef.text_at_pos(ax[0], 0.24 * 1.5, 0.24, '1:1.5', bbox=dict(facecolor='white', ec='none', alpha=0.7))
+            # subplot.text(x, y, text,
+            #              verticalalignment=valign, horizontalalignment=halign,
+            #              color=color, fontsize=fontsize, zorder=1000, style=style, bbox=bbox)
             # sp.plot([0, minlim], [0, 0.5 * minlim], c=cbox('mid gray'), zorder=-2)
 
 

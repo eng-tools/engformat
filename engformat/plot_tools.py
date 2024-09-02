@@ -31,14 +31,26 @@ def trim_ticks(sub_plot, **kwargs):
     sub_plot.set_yticks(yticks)
 
 
-def create_custom_legend_line(label, ls, c, mk=None, ms=5, mfc=None):
+def create_custom_legend_line(label, ls, c, mk=None, ms=5, mfc=None, lw=None):
     if mfc is None:
         mfc = c
     return Line2D([0], [0], ls=ls, marker=mk, color=c, label=label,
-               markerfacecolor=mfc, markersize=ms)
+               markerfacecolor=mfc, markersize=ms, linewidth=lw)
 
-def create_custom_legend_patch(label, c, alpha=1):
-    return mpatches.Patch(color=c, label=label, alpha=alpha)
+def create_custom_legend_patch(label, c, alpha=1, ec=None):
+    if ec is None:
+        return mpatches.Patch(color=c, label=label, alpha=alpha)
+    mp = mpatches.Patch(facecolor=c, label=label, alpha=alpha, edgecolor=ec)
+    # mp.get_frame().set_facecolor(bc)
+    return mp
+
+
+def convert_for_dark_background(ax):
+    clean_chart(ax, axis_col=(0.95, 0.95, 0.95))
+    ax.tick_params(axis='x', colors=(0.95, 0.95, 0.95))
+    ax.tick_params(axis='y', colors=(0.9, 0.95, 0.95))
+    ax.tick_params(axis="both", which="both", top=False,
+                   right=False)
 
 
 def revamp_legend(sub_plot, ncol=1, **kwargs):
@@ -49,6 +61,9 @@ def revamp_legend(sub_plot, ncol=1, **kwargs):
     add_handles = kwargs.get("add_handles", [])
     fixed_color = kwargs.get('fixed_color', None)
     handlelength = kwargs.get('handlelength', 1)
+    # zorder = kwargs.get('zorder', 1)
+    if prop is None:
+        prop = {'size': 7}
 
     if single:
         handles, labels = sub_plot.get_legend_handles_labels()
@@ -66,13 +81,13 @@ def revamp_legend(sub_plot, ncol=1, **kwargs):
 
     else:
         hands, labs = sub_plot.get_legend_handles_labels()
-
+    kw = {}
     if bbox_to_anchor != False:
         sub_plot.legend(hands, labs, numpoints=1, handlelength=handlelength, handletextpad=0.5, labelspacing=0.3, scatterpoints=1,
-                        loc=loc, ncol=ncol, bbox_to_anchor=bbox_to_anchor, prop=prop)
+                        loc=loc, ncol=ncol, bbox_to_anchor=bbox_to_anchor, prop=prop, **kw)
     else:
         sub_plot.legend(hands, labs, numpoints=1, handlelength=handlelength, handletextpad=0.5, labelspacing=0.3, scatterpoints=1,
-                        loc=loc, ncol=ncol, prop=prop)
+                        loc=loc, ncol=ncol, prop=prop, **kw)
     # borderpad    the fractional whitespace inside the legend border
     # shadow    if True, draw a shadow behind legend
     # framealpha    If not None, alpha channel for the frame.
@@ -125,14 +140,39 @@ def restyle_lines(sub_plot, style="bw", **kwargs):
         lines[i].set_color(cs(labs[label]))
 
 
-def text_at_rel_pos(subplot, x, y, text, valign='center', halign='center', color='k'):
-    subplot.text(x, y, text,
+def text_at_rel_pos(subplot, x, y, text, valign='center', halign='center', color='k', fontsize=8):
+    return subplot.text(x, y, text,
                        verticalalignment=valign, horizontalalignment=halign,
                        transform=subplot.transAxes,
-                       color=color, fontsize=8)
+                       color=color, fontsize=fontsize)
 
+def text_at_pos(subplot, x, y, text, valign='center', halign='center', color='k', fontsize=8, style=None, bbox=None,
+                **kwargs):
+    """
 
-def letter_code(subplots, loc="upper left", col=None):
+    Parameters
+    ----------
+    subplot
+    x
+    y
+    text
+    valign
+    halign
+    color
+    fontsize
+    style:
+     supported values are 'normal', 'italic', 'oblique'
+
+    Returns
+    -------
+
+    """
+    return subplot.text(x, y, text,
+                       verticalalignment=valign, horizontalalignment=halign,
+                       color=color, fontsize=fontsize, zorder=1000, style=style, bbox=bbox, **kwargs)
+    
+
+def letter_code(subplots, loc="upper left", col=None, halign='left'):
     """
     Adds a letter from a to z to the corner of each subplot.
     """
@@ -166,30 +206,32 @@ def letter_code(subplots, loc="upper left", col=None):
         else:
             color = 'white'
         flat_plots[i].text(x[i], y[i], '(%s)' % letters[i],
-            verticalalignment='top', horizontalalignment='left',
+            verticalalignment='top', horizontalalignment=halign,
             transform=flat_plots[i].transAxes,
             color=color, fontsize=8)
 
 
-def clean_chart(ax):
+def clean_chart(ax, axis_col=(0.25, 0.25, 0.25)):
     """
     Removes extra lines of axes and tick marks from chart.
     """
     edges = ['top', 'bottom', 'right', 'left']
-    ax.tick_params(color=cbox('dark gray'))
+    ax.tick_params(color=axis_col)
     for edge in edges:
-        ax.spines[edge].set_color(cbox('dark gray'))
+        ax.spines[edge].set_color(axis_col)
         ax.spines[edge].set_linewidth(0.4)
-    ax.yaxis.label.set_color(cbox('dark gray'))
-    ax.xaxis.label.set_color(cbox('dark gray'))
+    ax.yaxis.label.set_color(axis_col)
+    ax.xaxis.label.set_color(axis_col)
     ax.tick_params(axis='x', colors=(0.05, 0.05, 0.05), width=0.5, which='major', top=True)
     ax.tick_params(axis='y', colors=(0.05, 0.05, 0.05), width=0.5, which='major', left=True)
 
 
-def plot_multicolor_line(splot, x, y, z, cmap=None, vmin=None, vmax=None, lw=None, label=None, off_x=0, off_y=0):
+def plot_multicolor_line(splot, x, y, z=None, cmap=None, vmin=None, vmax=None, lw=None, label=None, off_x=0, off_y=0):
     """
     Adds a line to a plot that changes color based on the z-value and a cmap (default=viridis)
     """
+    if z is None:
+        z = np.arange(len(x))
     # Based on the matplotlib example: https://matplotlib.org/gallery/lines_bars_and_markers/multicolored_line.html
     points = np.array([x, y]).T.reshape(-1, 1, 2)
     segments = np.concatenate([points[:-1], points[1:]], axis=1)
@@ -299,7 +341,7 @@ def get_percentile_vs_x(x, y, q=25, nbins=15, sorted=True):
     return np.array(base), np.array(m_new), np.array(h1), np.array(h2)
 
 
-def plot_percentile_bounds_vs_x(sps, x, y, q=25, nbins=15, pcol='blue', scol='orange', sorted=True, line_alpha=1):
+def plot_percentile_bounds_vs_x(sps, x, y, q=25, nbins=15, pcol='blue', scol='orange', sorted=True, line_alpha=1, labels=True):
     """
     Plots the q and 100-q as well as the median
 
@@ -350,10 +392,16 @@ def plot_percentile_bounds_vs_x(sps, x, y, q=25, nbins=15, pcol='blue', scol='or
         if cc >= 2:
             no_dist = 1
     if no_dist == 0:
-        sps.plot(base, m_new, c=pcol, label='Mean')
+        kws = {}
+        if labels is True:
+            kws['label'] = 'Median'
+        sps.plot(base, m_new, c=pcol, **kws)
         sps.fill_between(base, h1, h2, facecolor=scol, alpha=0.3)
         lab = f'{q} - {100-q} %'
-        sps.plot(base, h1, c=scol, alpha=line_alpha, label=lab)
+        kws = {}
+        if labels is True:
+            kws['label'] = lab
+        sps.plot(base, h1, c=scol, alpha=line_alpha, **kws)
         sps.plot(base, h2, c=scol, alpha=line_alpha)
 
 

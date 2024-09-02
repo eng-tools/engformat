@@ -27,14 +27,18 @@ def save_figure(ap, figure, name, publish=True, name_ext="", ftype=".png", latex
     return ""
 
 
-def latex_for_figure(figure_folder_name, name, ftype):
+def latex_for_figure(figure_folder_name, name, ftype, caption=None, width=None):
+    if caption is None:
+        caption = name.replace("_", " ")
     str_parts = ["",
                     "\\begin{figure}[H]",
                     "\centering",
                     "\\includegraphics{%s/%s%s}" % (figure_folder_name, name, ftype),
-                    "\\caption{%s \label{fig: %s}}" % (name.replace("_", " "), name),
+                    "\\caption{%s \label{fig: %s}}" % (caption, name),
                     "\\end{figure}"
                  ]
+    if width is not None:
+        return "\n".join(str_parts).replace('includegraphics', f'includegraphics[width={width}]')
     return "\n".join(str_parts)
 
 
