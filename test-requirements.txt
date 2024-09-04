@@ -2,3 +2,4 @@ mock
 pytest
 nose
 pytest-pep8
+eqsig

@@ -1,4 +1,3 @@
-from sfsimodels import output as mo
 from collections import OrderedDict
 
 
@@ -43,10 +42,12 @@ def latex_for_figure(figure_folder_name, name, ftype, caption=None, width=None):
 
 
 def output_to_table(**kwargs):
+    from sfsimodels import output as mo
     mo.output_to_table(**kwargs)
 
 
 def add_table_ends(**kwargs):
+    from sfsimodels import output as mo
     mo.add_table_ends(**kwargs)
 
 

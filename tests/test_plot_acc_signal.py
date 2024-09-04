@@ -3,8 +3,6 @@ import matplotlib
 matplotlib.use('agg')
 from eqsig import AccSignal
 from matplotlib.testing.decorators import image_comparison
-import matplotlib.pyplot as plt
-from bwplot import cbox
 
 from engformat import plot_acc_signal
 
