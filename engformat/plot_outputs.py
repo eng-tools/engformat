@@ -31,9 +31,9 @@ def latex_for_figure(figure_folder_name, name, ftype, caption=None, width=None):
         caption = name.replace("_", " ")
     str_parts = ["",
                     "\\begin{figure}[H]",
-                    "\centering",
+                    r"\centering",
                     "\\includegraphics{%s/%s%s}" % (figure_folder_name, name, ftype),
-                    "\\caption{%s \label{fig: %s}}" % (caption, name),
+                    r"\\caption{%s \label{fig: %s}}" % (caption, name),
                     "\\end{figure}"
                  ]
     if width is not None:
