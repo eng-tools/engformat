@@ -52,7 +52,8 @@ def time_series(sp, **kwargs):
 
 def new_time_series_plots(nrows=1):
 
-    bf, sub_plots = plt.subplots(nrows=nrows, ncols=1, sharex=True)
+    _, sub_plots = plt.subplots(nrows=nrows, ncols=1, sharex=True)
+    sub_plots = np.atleast_1d(sub_plots)
     for sp in sub_plots:
         sp.tick_params(axis="both", which="both", bottom=False, top=False,
                                    labelbottom=True, left=False, right=False, labelleft=True)
@@ -64,7 +65,7 @@ def new_time_series_plots(nrows=1):
 def time_series_plots(sub_plots):
 
     for sp in sub_plots:
-        sp.tick_params.tick_params(axis="both", which="both", bottom=False, top=False,
+        sp.tick_params(axis="both", which="both", bottom=False, top=False,
                                    labelbottom=True, left=False, right=False, labelleft=True)
         sp.set_xlabel("")
     sub_plots[-1].tick_params(axis="both", which="both", bottom=True, top=False,

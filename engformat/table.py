@@ -118,7 +118,7 @@ def add_table_ends(para, oformat='latex', caption="caption-text", label="table",
     if oformat == 'latex':
         fpara += "\\begin{table}[H]\n"
         if caption is not None:
-            fpara += "\\caption{%s \label{tab:%s}}\n" % (caption, label)
+            fpara += "\\caption{%s \\\\label{tab:%s}}\n" % (caption, label)
         fpara += "\\centering\n"
         fpara += "\\begin{tabular}{%s}\n" % a_str
         fpara += "\\toprule\n"
@@ -130,4 +130,3 @@ def add_table_ends(para, oformat='latex', caption="caption-text", label="table",
         fpara += "\\end{tabular}\n"
         fpara += "\\end{table}\n\n"
     return fpara
-

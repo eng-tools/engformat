@@ -1,5 +1,2 @@
-mock
-pytest
-nose
-pytest-pep8
-eqsig
+pytest>=8.0
+pytest-cov>=5.0

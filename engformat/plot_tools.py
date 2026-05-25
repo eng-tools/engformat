@@ -60,7 +60,7 @@ def revamp_legend(sub_plot, ncol=1, **kwargs):
     prop = kwargs.get('prop', None)
     add_handles = kwargs.get("add_handles", [])
     fixed_color = kwargs.get('fixed_color', None)
-    handlelength = kwargs.get('handlelength', 1)
+    handlelength = kwargs.get('handlelength', 1.5)
     # zorder = kwargs.get('zorder', 1)
     if prop is None:
         prop = {'size': 7}

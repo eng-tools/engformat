@@ -1,4 +1,5 @@
-numpy
-matplotlib
-bwplot
-pytest
+numpy>=1.23
+matplotlib>=3.7
+bwplot>=0.2.10
+sfsimodels>=0.9.46
+eqsig>=1.2.17
