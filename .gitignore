@@ -1,1 +1,17 @@
 # Created by .ignore support plugin (hsz.mobi)
+.idea/
+engformat.egg-info/
+
+dist/
+.cache/
+engformat/matplotlibrc
+__pycache__/
+tests/engformat.egg-info/
+venv/
+.pytest_cache/
+# Sphinx documentation
+docs/_build/
+examples/.ipynb_checkpoints/
+rsync-files.sl
+.python-version
+result_images/

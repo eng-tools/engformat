@@ -1,5 +1,5 @@
 import subprocess
-import py
+import pytest
 
 about = {}
 with open("engformat/__about__.py") as fp:
@@ -7,7 +7,7 @@ with open("engformat/__about__.py") as fp:
 
 version = about['__version__']
 
-failures = py.test.cmdline.main()
+failures = pytest.main()
 if failures == 0:
     subprocess.check_call(["git", "tag", version, "-m", "version %s" % version])
     subprocess.check_call(["git", "push", "--tags", "origin", "master"])
